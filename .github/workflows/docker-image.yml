@@ -24,8 +24,15 @@ jobs:
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
           
           
-    - name: Build the Docker image
-      run: docker build --file Dockerfile -t akashchhetri/helloworlddeploy:$(date +%s) .
+    - name: Pull the docker image
+      run: docker pull akashchhetri/helloworlddeploy:60
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'akashchhetri/helloworlddeploy:60'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
       
     
       
